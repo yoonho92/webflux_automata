@@ -19,7 +19,6 @@ public class Handler {
 
 
         String str = request.queryParam("input").get();
-        System.out.println(str.length());
         Mono<String> EngToKorMono = Mono.just(new EngToKor().EngToKorAct(str)).map(n ->{
             HashMap<String,String> result = new HashMap<>();
             result.put("assembly",n);
@@ -29,7 +28,6 @@ public class Handler {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
-            System.out.println(resultStr);
             return resultStr;
         });
         return ServerResponse.ok()
