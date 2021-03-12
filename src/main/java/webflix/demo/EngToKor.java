@@ -26,6 +26,19 @@ public class EngToKor {
             if (input.substring(i, i + 1).equals(" ")) { // 현재 i의 위치가 공백일 경우 for문의 마지막에서 띄어쓰기 추가
                 check = true;
             }
+            int finalI = i;
+            if(choNum == -1 &&Arrays.stream(choEng).anyMatch(n -> n.equals(input.substring(finalI, finalI +1))) //자음이 포함된 문장이 나올때 한글자모코드로 변환
+                    && Arrays.stream(choEng).anyMatch(n -> n.equals(input.substring(finalI +1, finalI +2)))){
+                for(int m = 0; m < choEng.length; m++){
+                    if(choEng[m].equals(input.substring(i,i+1))){
+                        choNum = m;
+                        break;
+                    }
+                }
+                SB.append((char) ((choNum * 21) * 28 + 0x1100));
+                choNum = -1;
+                continue;
+            }
             if (choNum == -1) { //초성이 찾아진 상태인지 여부를 확인함, 한글 한글자가 완성되면 -1로 초기화
                 chr = input.substring(i, i + 1); // input 변수에서 i번째에 해당하는 첫번째 문자 추출
                 for (int j = 0; j < choEng.length; j++) {
@@ -55,7 +68,7 @@ public class EngToKor {
                     }
                 }
             }
-            if ((choNum != -1) && joongNum != -1) { // 초성과 중성이 찾아진 상태이어야 종성이 들어갈수 있기 때문에 여부 체크
+            if (choNum != -1) { // 초성과 중성이 찾아진 상태이어야 종성이 들어갈수 있기 때문에 여부 체크
                 for (String joongChr : joongEng) {
                     Temp.add(input.indexOf(joongChr, i)); //현재 i번째에 해당하는 문자열을 기준으로 다음에 있는 중성의 인덱스 추가
                 }
